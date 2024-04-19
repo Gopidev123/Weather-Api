@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <!-- <link rel="stylesheet" href="wet.css"> -->
+    <style>
+             body {
+            font-family: Arial, sans-serif;
+            background-color: #eaf6ff; 
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url("images/licensed-image.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            
+        }
+
+        .weather-container {
+            background-color: #eaf6ff;  
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            
+        }
+
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333333; 
+        }
+
+        input[type="search"] {
+            padding: 10px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50; 
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #weather-info {
+            margin-top: 20px;
+        }
+
+        .weather-item {
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff; 
+            margin-bottom: 10px;
+            color: #333333; 
+        }
+
+        .weather-item#city {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .weather-item#temperature {
+            font-size: 18px;
+        }
+
+        .weather-item#description {
+            font-size: 16px;
+        }
+
+        .weather-item#wind {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-container">
+        <h1>Weather App</h1>
+        <input type="search" id="searchLocation" placeholder="Enter city name">
+        <button id="btn" onclick="getWeather()">Get Weather</button>
+
+        <div id="weather-info">
+            <div id="city" class="weather-item"></div>
+            <div id="temperature" class="weather-item"></div>
+            <div id="description" class="weather-item"></div>
+            <div id="wind" class="weather-item"></div>
+            <!-- <div id="icon"></div> -->
+        </div>
+    </div>
+
+    <script>
+
+        var getLocation = document.getElementById("searchLocation")
+        var getBtn = document.getElementById("btn")
+        var getWeatherInfo = document.getElementById("weather-info")
+        var getCity = document.getElementById("city")
+        var getTemp = document.getElementById("temperature")
+        var getDes = document.getElementById("description")
+        var getWind = document.getElementById("wind")
+        var apiKey = 'd13ed1c9c36ef82735989a8265a59d90';
+
+        function getWeather(){
+
+            if(getLocation.value == ""){
+                alert("please enter a location name")
+            }
+            else{
+
+                let loc = getLocation.value
+                let url = `https://api.openweathermap.org/data/2.5/weather?q=${loc}&appid=${apiKey}`;
+                fetch(url).then((resp)=>resp.json())
+                .then((data)=>{
+
+                    console.log(data)
+                    getCity.textContent = data.name;
+                    getTemp.textContent = `${Math.round(data.main.temp - 273.15)}°C;`
+                    getDes.textContent = data.weather[0].description;
+                    getWind.textContent = data.wind.deg;
+                    getWeatherInfo.append(getCity,getTemp,getDes,getWind);
+                
+                
+                })
+            }
+          
+        }
+       
+
+        
+
+    </script>
+</body>
+</html>
